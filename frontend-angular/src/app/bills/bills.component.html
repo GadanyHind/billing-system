@@ -1,0 +1,24 @@
+<div class="container">
+  <table class="table" *ngIf="bills">
+    <thead>
+    <tr>
+      <th>ID</th> <th>Date</th> <th>Customer Id</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let b of bills">
+      <td>{{b.id}}</td>
+      <td>{{b.billingDate|date : 'dd/MM/yy'}}</td>
+      <td>{{b.customerId}}</td>
+      <td>
+        <button class="btn btn-success" (click)="getBillDetails(b)">
+          Bill Details
+        </button>
+      </td>
+
+    </tr>
+    </tbody>
+
+  </table>
+
+</div>

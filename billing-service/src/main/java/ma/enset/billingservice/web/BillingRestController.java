@@ -7,9 +7,12 @@ import ma.enset.billingservice.model.Customer;
 import ma.enset.billingservice.model.Product;
 import ma.enset.billingservice.repository.BillRepository;
 import ma.enset.billingservice.repository.ProductItemRepository;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class BillingRestController {
@@ -37,4 +40,24 @@ public class BillingRestController {
         });
         return bill;
     }
-}
+
+    @GetMapping(path="/customerBill/{customerId}")
+    public List<Bill> getBillByCustomerId(@PathVariable(name= "customerId") Long customerId) {
+        List<Bill> bills = billRepository.findByCustomerId(customerId);
+
+        // Vérifier si les factures existe
+        if (bills.isEmpty()) {
+            throw new ResourceNotFoundException("Bills not found for customer id: " + customerId);
+        }
+
+        bills.forEach(bill -> {
+            Customer customer = customerRestClient.getCustomerById(bill.getCustomerId());
+            bill.setCustomer(customer);
+
+            bill.getProducts().forEach(p -> {
+                Product product = productItemRestClient.getProductById(p.getProductId());
+                p.setProduct(product);
+            });
+        });
+        return bills;
+}}

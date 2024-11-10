@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ProductItemRestClient {
 
     @GetMapping(path = "/products")
-    PagedModel<Product> pageProducts(@RequestParam(name = "page") int page,
-                                     @RequestParam(name = "size") int size);
+    PagedModel<Product> pageProducts();
     @GetMapping(path="/products/{id}")
     Product getProductById(@PathVariable(name = "id") Long id);
 }

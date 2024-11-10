@@ -22,4 +22,12 @@ public class Bill {
     private Long customerId;
     @Transient
     private Customer customer;
+
+    public double getTotalPrice() {
+        double somme=0;
+        for (ProductItem productItem : products) {
+            somme+=productItem.getAmount();
+        }
+        return somme;
+    }
 }

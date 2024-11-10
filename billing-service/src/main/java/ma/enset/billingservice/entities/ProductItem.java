@@ -21,4 +21,10 @@ public class ProductItem {
     private Bill bill;
     @Transient
     private Product product;
+
+
+
+    public double getAmount(){
+        return quantity * price;
+    }
 }
